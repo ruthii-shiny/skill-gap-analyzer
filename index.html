@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Skill Gap Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 20px;
+        }
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+        .container {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            width: 500px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #555;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page 1: Student Name -->
+<div class="container" id="page1">
+    <h2>Step 1: Enter Your Name</h2>
+    <label>Student Name:</label>
+    <input type="text" id="studentName">
+    <button onclick="goToPage2()">Next</button>
+</div>
+
+<!-- Page 2: Known Skills + Desired Field -->
+<div class="container" id="page2" style="display:none;">
+    <h2>Step 2: Enter Your Known Skills</h2>
+    <label>Current Skills (comma separated):</label>
+    <textarea id="currentSkills" placeholder="e.g., Python, Excel, Communication"></textarea>
+    <label>Choose Desired Field:</label>
+    <select id="field">
+        <option value="Data Science">Data Science</option>
+        <option value="Web Development">Web Development</option>
+        <option value="Digital Marketing">Digital Marketing</option>
+        <option value="Cyber Security">Cyber Security</option>
+    </select>
+    <button onclick="goToPage3()">Next</button>
+</div>
+
+<!-- Page 3: Missing Skills -->
+<div class="container" id="page3" style="display:none;">
+    <h2>Step 3: Missing Skills</h2>
+    <div id="missingSkillsOutput"></div>
+    <button onclick="goToPage4()">Next</button>
+</div>
+
+<!-- Page 4: Recommended Companies -->
+<div class="container" id="page4" style="display:none;">
+    <h2>Step 4: Recommended Companies</h2>
+    <div id="companyOutput"></div>
+</div>
+
+<script>
+    let studentName = "";
+    let currentSkills = [];
+    let field = "";
+
+    // Required skills for each field
+    const requiredSkills = {
+        "Data Science": ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"],
+        "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
+        "Digital Marketing": ["SEO", "Content Writing", "Google Analytics", "Social Media Marketing"],
+        "Cyber Security": ["Networking", "Linux", "Risk Assessment", "Penetration Testing", "Firewalls"]
+    };
+
+    // Core companies for each field
+    const companies = {
+        "Data Science": ["Google", "Microsoft", "IBM", "Amazon"],
+        "Web Development": ["Meta", "Infosys", "Wipro", "TCS"],
+        "Digital Marketing": ["HubSpot", "Adobe", "Accenture", "Cognizant"],
+        "Cyber Security": ["Cisco", "Palo Alto Networks", "Kaspersky", "EY"]
+    };
+
+    function goToPage2() {
+        studentName = document.getElementById("studentName").value.trim();
+        if(studentName === "") {
+            alert("Please enter your name.");
+            return;
+        }
+        document.getElementById("page1").style.display = "none";
+        document.getElementById("page2").style.display = "block";
+    }
+
+    function goToPage3() {
+        currentSkills = document.getElementById("currentSkills").value.split(",").map(s => s.trim());
+        field = document.getElementById("field").value;
+
+        let neededSkills = requiredSkills[field];
+        let missingSkills = neededSkills.filter(skill => !currentSkills.includes(skill));
+
+        // AI-style priority logic
+        let priority;
+        if (missingSkills.length > 3) priority = "High";
+        else if (missingSkills.length === 2) priority = "Medium";
+        else if (missingSkills.length === 1) priority = "Low";
+        else priority = "None – You’re ready!";
+
+        document.getElementById("missingSkillsOutput").innerHTML = `
+            <h3>Hello, ${studentName}!</h3>
+            <p><strong>Desired Field:</strong> ${field}</p>
+            <p><strong>Missing Skills:</strong></p>
+            <ul>${missingSkills.length > 0 ? missingSkills.map(skill => `<li>${skill}</li>`).join("") : "<li>No missing skills!</li>"}</ul>
+            <p><strong>AI Priority Level:</strong> ${priority}</p>
+        `;
+
+        document.getElementById("page2").style.display = "none";
+        document.getElementById("page3").style.display = "block";
+    }
+
+    function goToPage4() {
+        let recommendedCompanies = companies[field];
+        document.getElementById("companyOutput").innerHTML = `
+            <h3>Recommended Companies for ${field}:</h3>
+            <ul>${recommendedCompanies.map(c => `<li>${c}</li>`).join("")}</ul>
+        `;
+        document.getElementById("page3").style.display = "none";
+        document.getElementById("page4").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
