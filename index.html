@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Skill Gap Analysis</title>
+    <title>EV Skill Gap Analysis</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+            background: linear-gradient(135deg, #00c6ff, #0072ff, #00c9ff, #92fe9d);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             padding: 20px;
@@ -18,7 +18,7 @@
         .container {
             background: rgba(255,255,255,0.9);
             padding: 20px;
-            width: 500px;
+            width: 550px;
             margin: auto;
             border-radius: 12px;
             box-shadow: 0 0 15px #555;
@@ -39,6 +39,10 @@
             border: 1px solid #ccc;
             border-radius: 6px;
         }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+        }
         button {
             margin-top: 15px;
             padding: 12px;
@@ -52,10 +56,6 @@
         }
         button:hover {
             background: #0056b3;
-        }
-        .button-row {
-            display: flex;
-            justify-content: space-between;
         }
     </style>
 </head>
@@ -75,13 +75,13 @@
 <div class="container" id="page2" style="display:none;">
     <h2>Step 2: Enter Your Known Skills</h2>
     <label>Current Skills (comma separated):</label>
-    <textarea id="currentSkills" placeholder="e.g., Python, Excel, Communication"></textarea>
+    <textarea id="currentSkills" placeholder="e.g., CAD, MATLAB, Battery Testing"></textarea>
     <label>Choose Desired Field:</label>
     <select id="field">
-        <option value="Data Science">Data Science</option>
-        <option value="Web Development">Web Development</option>
-        <option value="Digital Marketing">Digital Marketing</option>
-        <option value="Cyber Security">Cyber Security</option>
+        <option value="Automotive Engineering">Automotive Engineering</option>
+        <option value="EV Battery Technology">EV Battery Technology</option>
+        <option value="EV Software & Electronics">EV Software & Electronics</option>
+        <option value="EV Supply Chain">EV Supply Chain</option>
     </select>
     <div class="button-row">
         <button onclick="backToPage1()">Back</button>
@@ -113,18 +113,20 @@
     let currentSkills = [];
     let field = "";
 
+    // Required skills for each EV-related field
     const requiredSkills = {
-        "Data Science": ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"],
-        "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
-        "Digital Marketing": ["SEO", "Content Writing", "Google Analytics", "Social Media Marketing"],
-        "Cyber Security": ["Networking", "Linux", "Risk Assessment", "Penetration Testing", "Firewalls"]
+        "Automotive Engineering": ["CAD Design", "Vehicle Dynamics", "Manufacturing Processes", "Quality Control", "Lean Production"],
+        "EV Battery Technology": ["Battery Chemistry", "Thermal Management", "Battery Testing", "Energy Storage Systems", "Safety Standards"],
+        "EV Software & Electronics": ["Embedded Systems", "Power Electronics", "Control Systems", "CAN Protocols", "IoT Integration"],
+        "EV Supply Chain": ["Logistics", "Procurement", "Supplier Management", "Sustainability", "Inventory Optimization"]
     };
 
+    // Core companies in automotive & EV ecosystem
     const companies = {
-        "Data Science": ["Google", "Microsoft", "IBM", "Amazon"],
-        "Web Development": ["Meta", "Infosys", "Wipro", "TCS"],
-        "Digital Marketing": ["HubSpot", "Adobe", "Accenture", "Cognizant"],
-        "Cyber Security": ["Cisco", "Palo Alto Networks", "Kaspersky", "EY"]
+        "Automotive Engineering": ["Toyota", "Ford", "Volkswagen", "Tata Motors"],
+        "EV Battery Technology": ["CATL", "LG Chem", "Panasonic", "BYD"],
+        "EV Software & Electronics": ["Tesla", "Bosch", "NXP Semiconductors", "Continental"],
+        "EV Supply Chain": ["DHL Supply Chain", "Mahindra Logistics", "Flex", "Siemens"]
     };
 
     function goToPage2() {
@@ -175,7 +177,7 @@
     function goToPage4() {
         let recommendedCompanies = companies[field];
         document.getElementById("companyOutput").innerHTML = `
-            <h3>Recommended Companies for ${field}:</h3>
+            <h3>Recommended Companies in ${field}:</h3>
             <ul>${recommendedCompanies.map(c => `<li>${c}</li>`).join("")}</ul>
         `;
         document.getElementById("page3").style.display = "none";
