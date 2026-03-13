@@ -42,7 +42,7 @@
         button {
             margin-top: 15px;
             padding: 12px;
-            width: 100%;
+            width: 48%;
             background: #007bff;
             color: white;
             border: none;
@@ -53,11 +53,9 @@
         button:hover {
             background: #0056b3;
         }
-        #output {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f5e9;
-            border-radius: 8px;
+        .button-row {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -68,7 +66,9 @@
     <h2>Step 1: Enter Your Name</h2>
     <label>Student Name:</label>
     <input type="text" id="studentName">
-    <button onclick="goToPage2()">Next</button>
+    <div class="button-row">
+        <button onclick="goToPage2()">Next</button>
+    </div>
 </div>
 
 <!-- Page 2: Known Skills + Desired Field -->
@@ -83,20 +83,29 @@
         <option value="Digital Marketing">Digital Marketing</option>
         <option value="Cyber Security">Cyber Security</option>
     </select>
-    <button onclick="goToPage3()">Next</button>
+    <div class="button-row">
+        <button onclick="backToPage1()">Back</button>
+        <button onclick="goToPage3()">Next</button>
+    </div>
 </div>
 
 <!-- Page 3: Missing Skills -->
 <div class="container" id="page3" style="display:none;">
     <h2>Step 3: Missing Skills</h2>
     <div id="missingSkillsOutput"></div>
-    <button onclick="goToPage4()">Next</button>
+    <div class="button-row">
+        <button onclick="backToPage2()">Back</button>
+        <button onclick="goToPage4()">Next</button>
+    </div>
 </div>
 
 <!-- Page 4: Recommended Companies -->
 <div class="container" id="page4" style="display:none;">
     <h2>Step 4: Recommended Companies</h2>
     <div id="companyOutput"></div>
+    <div class="button-row">
+        <button onclick="backToPage3()">Back</button>
+    </div>
 </div>
 
 <script>
@@ -104,7 +113,6 @@
     let currentSkills = [];
     let field = "";
 
-    // Required skills for each field
     const requiredSkills = {
         "Data Science": ["Python", "Machine Learning", "Statistics", "SQL", "Data Visualization"],
         "Web Development": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
@@ -112,7 +120,6 @@
         "Cyber Security": ["Networking", "Linux", "Risk Assessment", "Penetration Testing", "Firewalls"]
     };
 
-    // Core companies for each field
     const companies = {
         "Data Science": ["Google", "Microsoft", "IBM", "Amazon"],
         "Web Development": ["Meta", "Infosys", "Wipro", "TCS"],
@@ -130,6 +137,11 @@
         document.getElementById("page2").style.display = "block";
     }
 
+    function backToPage1() {
+        document.getElementById("page2").style.display = "none";
+        document.getElementById("page1").style.display = "block";
+    }
+
     function goToPage3() {
         currentSkills = document.getElementById("currentSkills").value.split(",").map(s => s.trim());
         field = document.getElementById("field").value;
@@ -137,7 +149,6 @@
         let neededSkills = requiredSkills[field];
         let missingSkills = neededSkills.filter(skill => !currentSkills.includes(skill));
 
-        // AI-style priority logic
         let priority;
         if (missingSkills.length > 3) priority = "High";
         else if (missingSkills.length === 2) priority = "Medium";
@@ -156,6 +167,11 @@
         document.getElementById("page3").style.display = "block";
     }
 
+    function backToPage2() {
+        document.getElementById("page3").style.display = "none";
+        document.getElementById("page2").style.display = "block";
+    }
+
     function goToPage4() {
         let recommendedCompanies = companies[field];
         document.getElementById("companyOutput").innerHTML = `
@@ -164,6 +180,11 @@
         `;
         document.getElementById("page3").style.display = "none";
         document.getElementById("page4").style.display = "block";
+    }
+
+    function backToPage3() {
+        document.getElementById("page4").style.display = "none";
+        document.getElementById("page3").style.display = "block";
     }
 </script>
 
